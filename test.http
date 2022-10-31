@@ -1,0 +1,28 @@
+GET http://185.244.172.108:8081/v1/outlay-rows/entity/2466/row/list
+
+
+
+###
+
+GET http://185.244.172.108:8081/v1/outlay-rows/entity/2466/row/list
+###
+
+POST http://185.244.172.108:8081/v1/outlay-rows/entity/2466/row/create
+content-type: application/json
+
+{
+  "equipmentCosts": 0,
+  "estimatedProfit": 0,
+  "machineOperatorSalary": 0,
+  "mainCosts": 0,
+  "materials": 0,
+  "mimExploitation": 0,
+  "overheads": 0,
+  "parentId": 1863,
+  "rowName": "фундаментальные работы",
+  "salary": 0,
+  "supportCosts": 0
+}
+
+
+###

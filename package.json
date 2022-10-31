@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate",
+  "name": "7winds_test",
   "version": "0.1.0",
   "homepage": ".",
   "private": true,
@@ -16,8 +16,10 @@
     "mobx": "^6.6.2",
     "mobx-react": "^7.5.3",
     "react": "^18.2.0",
+    "react-datasheet": "^1.4.12",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "react-svg": "^15.1.11",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
@@ -47,5 +49,12 @@
   },
   "devDependencies": {
     "typescript-plugin-css-modules": "^3.4.0"
+  },
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ]
   }
 }

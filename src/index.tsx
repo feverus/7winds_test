@@ -1,7 +1,9 @@
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'mobx-react'
 import { Main } from './components/main';
-import defaultStore from '../store/defaultStore'
+import defaultStore from './store/defaultStore'
+
+import  './index.css'
 
 const stores = {
   defaultStore,

@@ -1,0 +1,28 @@
+.topNav {
+    height: 44px;
+    display: flex;
+    border-bottom: 1px solid #414144;
+}
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.buttonIcon svg {
+    width: 24px;
+    height: 24px;
+    padding: 10px 0 10px 20px;
+}
+.buttonIcon svg path {
+    fill: #A1A1AA;
+}
+.buttonText {
+    color: #A1A1AA;
+    padding: 13px 2px 15px 2px;
+    margin-left: 26px;
+}
+.buttonText.active {
+    color: #FFFFFF;
+    border-bottom: 2px solid #FFFFFF;
+}
