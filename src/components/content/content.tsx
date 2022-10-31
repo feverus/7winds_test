@@ -1,9 +1,9 @@
 import {observer, inject} from "mobx-react";
 import defaultStore from '../../store/defaultStore'
-import { NavBarList } from "../navBarList";
-import useContent from "./content.service";
+import { Level } from "../level";
+import useContent, { GridElement } from "./content.service";
 import C from './content.module.css'
-import { ReactSVG } from 'react-svg'
+
 import ReactDataSheet from 'react-datasheet';
 import { ReactElement, JSXElementConstructor, ReactFragment, ReactPortal } from "react";
 
@@ -20,8 +20,9 @@ export function Content() {
 		return(
 			<div className={C.table}>
 				<div className={C.tableHead}>
-					{state.columns.map(col => (
-						<div className={C.tableCell}>
+					{state.columns.map((col, id) => (
+						<div key={id}
+							className={C.tableCell}>
 							{col.label}
 						</div>
 					))}
@@ -46,6 +47,13 @@ export function Content() {
 			</div>
 		)		
 	}
+	const valueViewer = (cell: GridElement) => {
+		const result = (cell.col===0)?
+			<Level value={cell.value as number}
+			haveChild={state.rowsProps[cell.row as number].haveChild} lastChild={state.rowsProps[cell.row as number].lastChild} />:
+			cell.value	
+		return result		
+	}
 
 	return (
 		<div className={C.body}>
@@ -56,7 +64,9 @@ export function Content() {
 			</div>
 			<ReactDataSheet
 				data={state.grid}
-				valueRenderer={(cell, i, j) => cell.value}
+				valueRenderer={(cell) => cell.value}
+				valueViewer={(cell: GridElement) => valueViewer(cell)}
+
 				dataRenderer={(cell, i, j) => cell.value + ' ***'}
 
 				sheetRenderer={(props: PropsSheetRenderer)=>sheetRenderer(props)}

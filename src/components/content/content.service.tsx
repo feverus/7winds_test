@@ -6,17 +6,26 @@ import mock from './mock';
 
 export interface GridElement extends ReactDataSheet.Cell<GridElement, number|string> {
     value: number|string;
+    col?:number;
+    row?:number;
 }
+
+export type RowProps = Array<{
+    haveChild: boolean,
+    lastChild:boolean
+}>
 
 export type UseContent = () => [
     state: {
         grid:GridElement[][];
-        columns:Array<{label:string}>
+        columns:Array<{label: string}>;
+        rowsProps:RowProps
     },
 ]
 
 const useContent:UseContent = () => {     
     let readyData:GridElement[][] = []
+    let rowsProps:RowProps = []
 
     const columns = [
         { label: 'Уровень'},
@@ -29,9 +38,12 @@ const useContent:UseContent = () => {
 
     const rawData = mock
 
-    function getGrid(rawData:Array<I.Row>, level:number) {
+    function getGrid(rawData:Array<I.Row>, level:number, childsCount:number) {
         let row:GridElement[] = []
-        rawData.forEach((json) => {
+        rawData.forEach((json, num) => {
+            let lastChild = (num<childsCount-1)?
+                false:
+                true
             row = []
             row.push({"value": level})
             row.push({"value": json.rowName})
@@ -43,17 +55,21 @@ const useContent:UseContent = () => {
             
             //рекурсивно добавляем в таблицу потомков
             if (json.child && json.child.length>0) {
-                getGrid(json.child, level+1)
+                rowsProps.push({"haveChild": true, "lastChild": lastChild})
+                getGrid(json.child, level+1, json.child.length)                
+            } else {
+                rowsProps.push({"haveChild": false, "lastChild": lastChild})
             }
             
         })
     }
 
-    getGrid(rawData, 0)  
+    getGrid(rawData, 0, rawData.length)
 
     const state ={
         grid: readyData,
-        columns:columns
+        columns:columns,
+        rowsProps:rowsProps
     }
     return (
         [state]

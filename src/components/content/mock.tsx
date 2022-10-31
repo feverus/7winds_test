@@ -56,6 +56,21 @@ const mock = [
               "overheads": 1,
               "estimatedProfit": 1,
               "child": []
+            },
+            {
+              "id": 1950,
+              "rowName": "33 уровень",
+              "total": 0,
+              "salary": 1,
+              "mimExploitation": 1,
+              "machineOperatorSalary": 1,
+              "materials": 1,
+              "mainCosts": 1,
+              "supportCosts": 1,
+              "equipmentCosts": 1,
+              "overheads": 1,
+              "estimatedProfit": 1,
+              "child": []
             }
           ]
         }
