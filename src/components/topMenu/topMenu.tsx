@@ -5,7 +5,7 @@ import { ReactSVG } from 'react-svg'
 
 export function TopMenu() {
 	return (
-		<div className={C.topNav}>
+		<div className={C.body}>
 			<button className={C.buttonIcon}>
 				<ReactSVG src="icons/apps.svg" />
 			</button>

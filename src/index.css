@@ -1,3 +1,6 @@
+html, body, #root {
+    height: 100%;
+}
 body {
     background: #27272A;
     padding: 0%;
@@ -8,4 +11,7 @@ body {
     font-size: 14px;
     line-height: 16px;
     color: #FFFFFF;
+}
+svg path {
+    fill: #A1A1AA;
 }

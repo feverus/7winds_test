@@ -1,0 +1,33 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    width: 234px;
+    background: #27272A;
+    border-right: 1px solid #414144;
+    height: 100%;
+}
+.head {
+    height: 44px;
+    border-bottom: 1px solid #414144;
+    display: flex;
+}
+.lables {
+    width: 164px;
+    overflow: hidden;
+    padding: 8px 0 8px 20px;
+    display: flex;
+    flex-direction: column;
+    color: #A1A1AA;
+}
+.lables>label:nth-child(2) {
+    font-size: 10px;
+    line-height: 12px;
+}
+.icon {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}

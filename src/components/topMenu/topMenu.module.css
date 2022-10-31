@@ -1,7 +1,8 @@
-.topNav {
+.body {
     height: 44px;
     display: flex;
     border-bottom: 1px solid #414144;
+    flex: 1 0 100%;
 }
 button {
     background: none;
@@ -13,9 +14,6 @@ button {
     width: 24px;
     height: 24px;
     padding: 10px 0 10px 20px;
-}
-.buttonIcon svg path {
-    fill: #A1A1AA;
 }
 .buttonText {
     color: #A1A1AA;
