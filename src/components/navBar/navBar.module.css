@@ -31,3 +31,9 @@
     justify-content: center;
     align-content: center;
 }
+
+@media (max-width: 850px) {
+    .body {
+        height: auto;
+    }
+}

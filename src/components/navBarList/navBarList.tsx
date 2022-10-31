@@ -18,7 +18,7 @@ function Item(item:string, id:number, choosen:number) {
 
 }
 export function NavBarList() {
-	const state = useNavBarList()
+	const [state] = useNavBarList()
 	return (
 		<div className={C.body}>
 			{state.list.map((item, id)=>(

@@ -1,0 +1,50 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
+    background: #202124;
+}
+.head {
+    display: flex;
+    flex-direction: row;
+    height: 44px;
+    width: 100%;
+    border-bottom: 1px solid #414144;
+}
+.title {
+    font-size: 18px;
+    line-height: 21px;
+    padding: 11px 15px 12px 15px;
+    border-right: 1px solid #414144;
+}
+.table {
+    padding: 0 10px;
+    letter-spacing: 0.1px;
+}
+.tableHead {
+    height: 42px;
+    color: #A1A1AA;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #414144;
+}
+.tableCell {
+    flex: 1 1 200px;
+    margin: 21px auto 21px 12px;
+}
+.tableCell:nth-child(1) {
+    width: 110px;
+}
+.tableCell:nth-child(2) {
+    width: auto;
+}
+
+
+@media (max-width: 850px) {
+    .tableCell {
+        flex: 1 1 0;
+        margin: 21px auto 21px 12px;
+    }
+}

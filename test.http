@@ -11,17 +11,17 @@ POST http://185.244.172.108:8081/v1/outlay-rows/entity/2466/row/create
 content-type: application/json
 
 {
-  "equipmentCosts": 0,
-  "estimatedProfit": 0,
-  "machineOperatorSalary": 0,
-  "mainCosts": 0,
-  "materials": 0,
-  "mimExploitation": 0,
-  "overheads": 0,
-  "parentId": 1863,
-  "rowName": "фундаментальные работы",
-  "salary": 0,
-  "supportCosts": 0
+  "equipmentCosts": 1,
+  "estimatedProfit": 1,
+  "machineOperatorSalary": 1,
+  "mainCosts": 1,
+  "materials": 1,
+  "mimExploitation": 1,
+  "overheads": 1,
+  "parentId": 1952,
+  "rowName": "2 уровень еще один",
+  "salary": 1,
+  "supportCosts": 1
 }
 
 
