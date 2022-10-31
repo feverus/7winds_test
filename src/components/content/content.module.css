@@ -24,6 +24,13 @@
 .tableHead {
     height: 42px;
     color: #A1A1AA;
+}
+.tableRow {
+    height: 60px;
+    color: #ffffff;
+}
+
+.tableHead, .tableRow {    
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;

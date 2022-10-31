@@ -35,6 +35,7 @@ const useContent:UseContent = () => {
             row = []
             row.push({"value": level})
             row.push({"value": json.rowName})
+            row.push({"value": json.salary})
             row.push({"value": json.equipmentCosts})
             row.push({"value": json.overheads})
             row.push({"value": json.estimatedProfit})

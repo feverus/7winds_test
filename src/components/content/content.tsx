@@ -9,24 +9,42 @@ import { ReactElement, JSXElementConstructor, ReactFragment, ReactPortal } from 
 
 type PropsSheetRenderer = { className: string; children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }
 
+type PropsRowRenderer = { row: any; children: string | number | boolean | ReactFragment | ReactPortal | ReactElement<any, string | JSXElementConstructor<any>> | null | undefined; }
+
+type PropsCellRenderer = { children: string | number | boolean | ReactFragment | ReactPortal | ReactElement<any, string | JSXElementConstructor<any>> | null | undefined; }
+
 export function Content() {
 	const [state] = useContent()
 
 	const sheetRenderer = (props: PropsSheetRenderer) => {
 		return(
-		<div className={C.table}>
-			<div className={C.tableHead}>
-				{state.columns.map(col => (
-					<div className={C.tableCell}>
-						{col.label}
-					</div>
-				))}
+			<div className={C.table}>
+				<div className={C.tableHead}>
+					{state.columns.map(col => (
+						<div className={C.tableCell}>
+							{col.label}
+						</div>
+					))}
+				</div>
+				<div className={C.tableBody}>
+					{props.children}
+				</div>
 			</div>
-			<div className={C.tableBody}>
+		)
+	}
+	const rowRenderer = (props: PropsRowRenderer) => {
+		return(
+			<div className={C.tableRow}>
 				{props.children}
 			</div>
-		</div>
 		)
+	}
+	const cellRenderer = (props: PropsCellRenderer) => {
+		return (
+			<div className={C.tableCell}>
+				{props.children}
+			</div>
+		)		
 	}
 
 	return (
@@ -42,6 +60,8 @@ export function Content() {
 				dataRenderer={(cell, i, j) => cell.value + ' ***'}
 
 				sheetRenderer={(props: PropsSheetRenderer)=>sheetRenderer(props)}
+				rowRenderer={(props: PropsRowRenderer)=>rowRenderer(props)}
+				cellRenderer={(props: PropsCellRenderer)=>cellRenderer(props)}
 			/>
 		</div>
 	)
