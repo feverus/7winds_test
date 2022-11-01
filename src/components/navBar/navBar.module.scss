@@ -1,0 +1,43 @@
+@import '../../global.modules.scss';
+
+.body, .head, .icon {
+    display: flex;
+}
+
+.body {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    width: 234px;
+    background: $main_bg_color;
+    border-right: $border_global_color $border_global_style $border_global_width;
+    height: 100%;
+    .head {
+        height: 44px;
+        border-bottom: $border_global_color $border_global_style $border_global_width;
+        .lables {
+            width: 164px;
+            overflow: hidden;
+            padding: 8px 0 8px 20px;
+            display: flex;
+            flex-direction: column;
+            color: $main_element_color;
+            label:nth-child(2) {
+                font-size: 10px;
+                line-height: 12px;
+            }
+        }
+        .icon {
+            width: 50px;
+            justify-content: center;
+            align-content: center;
+        }
+    }
+}
+
+
+@media (max-width: 850px) {
+    .body {
+        height: auto;
+    }
+}

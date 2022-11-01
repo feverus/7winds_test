@@ -1,7 +1,7 @@
 import {observer, inject} from "mobx-react";
 import defaultStore from '../../store/defaultStore'
 import useNavBarList from './navBarList.service'
-import C from './navBarList.module.css'
+import C from './navBarList.module.scss'
 import { ReactSVG } from 'react-svg'
 
 function Item(item:string, id:number, choosen:number) {

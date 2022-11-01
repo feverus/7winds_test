@@ -1,7 +1,7 @@
 import {observer, inject} from "mobx-react";
 import defaultStore from '../../store/defaultStore'
 import { NavBarList } from "../navBarList";
-import C from './navBar.module.css'
+import C from './navBar.module.scss'
 import { ReactSVG } from 'react-svg'
 
 export function NavBar() {

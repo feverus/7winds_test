@@ -1,8 +1,10 @@
-html, body, #root {
+@import './global.modules.scss';
+
+html, body, body>div {
     height: 100%;
 }
 body {
-    background: #27272A;
+    background: $main_bg_color;
     padding: 0%;
     margin: 0;
     font-family: 'Roboto';
@@ -10,8 +12,8 @@ body {
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;
-    color: #FFFFFF;
+    color: $second_element_color;
 }
 svg path {
-    fill: #A1A1AA;
+    fill: $main_element_color;
 }

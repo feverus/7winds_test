@@ -1,7 +1,7 @@
 import {observer, inject} from "mobx-react";
 import defaultStore from '../../store/defaultStore'
 import { ReactSVG } from 'react-svg'
-import C from './level.module.css'
+import C from './level.module.scss'
 
 type P = {
 	value:number,
@@ -24,7 +24,6 @@ function DrawPict({name, value, haveChild, lastChild}:D ) {
 			break;
 	}
 
-	console.log(lastChild)
 	if (haveChild) style = style + ' ' + C.haveChild
 	if (!lastChild) style = style + ' ' + C.haveNextBrother
 	return (

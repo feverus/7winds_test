@@ -3,7 +3,7 @@ import { Provider } from 'mobx-react'
 import { Main } from './components/main';
 import defaultStore from './store/defaultStore'
 
-import  './index.css'
+import  './index.module.scss'
 
 const stores = {
   defaultStore,

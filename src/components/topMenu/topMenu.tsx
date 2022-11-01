@@ -1,6 +1,6 @@
 import {observer, inject} from "mobx-react";
 import defaultStore from '../../store/defaultStore'
-import C from './topMenu.module.css'
+import C from './topMenu.module.scss'
 import { ReactSVG } from 'react-svg'
 
 export function TopMenu() {

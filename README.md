@@ -1,1 +1,1 @@
-boilerplate
+Тестовое задание для 7winds

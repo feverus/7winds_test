@@ -1,7 +1,8 @@
+import { iteratorSymbol } from 'immer/dist/internal';
 import { useState, useEffect } from 'react'
 import ReactDataSheet from 'react-datasheet';
 import * as I from '../../store/storeInterfaces'
-import mock from './mock';
+
 
 
 export interface GridElement extends ReactDataSheet.Cell<GridElement, number|string> {
@@ -12,7 +13,8 @@ export interface GridElement extends ReactDataSheet.Cell<GridElement, number|str
 
 export type RowProps = Array<{
     haveChild: boolean,
-    lastChild:boolean
+    lastChild:boolean,
+    editMode:boolean,
 }>
 
 export type UseContent = () => [
@@ -21,11 +23,18 @@ export type UseContent = () => [
         columns:Array<{label: string}>;
         rowsProps:RowProps
     },
+    api: {
+        getGrid:(rawData:Array<I.Row>, level:number, childsCount:number) => void;
+        changeEditMode:(num:number) => void
+    }
 ]
 
-const useContent:UseContent = () => {     
-    let readyData:GridElement[][] = []
+const useContent:UseContent = () => {    
+    const [data, setData] = useState<GridElement[][]>([])
+    const [props, setProps] = useState<RowProps>([])  
+
     let rowsProps:RowProps = []
+    let readyData:GridElement[][] = []
 
     const columns = [
         { label: 'Уровень'},
@@ -36,10 +45,9 @@ const useContent:UseContent = () => {
         { label: 'Сметная прибыль'},
     ]
 
-    const rawData = mock
+    const getGrid = (rawData:Array<I.Row>, level:number, childsCount:number) => {
+        let row:GridElement[] = []                
 
-    function getGrid(rawData:Array<I.Row>, level:number, childsCount:number) {
-        let row:GridElement[] = []
         rawData.forEach((json, num) => {
             let lastChild = (num<childsCount-1)?
                 false:
@@ -55,24 +63,40 @@ const useContent:UseContent = () => {
             
             //рекурсивно добавляем в таблицу потомков
             if (json.child && json.child.length>0) {
-                rowsProps.push({"haveChild": true, "lastChild": lastChild})
+                rowsProps.push({"haveChild": true, "lastChild": lastChild, "editMode": false})
                 getGrid(json.child, level+1, json.child.length)                
             } else {
-                rowsProps.push({"haveChild": false, "lastChild": lastChild})
-            }
-            
+                rowsProps.push({"haveChild": false, "lastChild": lastChild, "editMode": false})
+            }            
         })
+
+        setData(readyData)
+        setProps(rowsProps)
     }
 
-    getGrid(rawData, 0, rawData.length)
-
-    const state ={
-        grid: readyData,
-        columns:columns,
-        rowsProps:rowsProps
+    const changeEditMode = (num: number) => {
+        const newProps = props.map((item, id) => {
+            if (id==num) item.editMode = !item.editMode;else item.editMode = false
+            return item
+        })
+        setProps(newProps)
     }
+
+    
+
+    const state = {
+        grid: data,
+        columns: columns,
+        rowsProps: props
+    }
+
+    const api = {
+        getGrid:getGrid,
+        changeEditMode: changeEditMode,
+    }
+
     return (
-        [state]
+        [state, api]
     )
 }
 export default useContent

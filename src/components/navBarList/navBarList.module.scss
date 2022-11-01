@@ -1,0 +1,21 @@
+@import '../../global.modules.scss';
+
+.body {
+    width: 100%;
+    .listItem {
+        height: 32px;
+        display: flex;
+        align-items: center;
+        &.choosen {
+            background: $main_element_color;
+        }
+        svg {
+            width: 22px;
+            height: 22px;
+            padding: 5px 14px 5px 20px;
+        }
+        path {
+            fill: $second_element_color;
+        }
+    }    
+}

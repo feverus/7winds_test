@@ -1,0 +1,67 @@
+@import '../../global.modules.scss';
+
+.body, .head, .tableHead, .tableRow {
+    display: flex;
+}
+
+.body {
+    flex-direction: column;
+    flex: 1 0 0;
+    background: #202124;
+    height: 100%;
+    .head {
+        flex-direction: row;
+        height: 44px;
+        width: 100%;
+        border-bottom: $border_global_color $border_global_style $border_global_width;        
+        .title {
+            font-size: 18px;
+            line-height: 21px;
+            padding: 11px 15px 12px 15px;
+            border-right: $border_global_color $border_global_style $border_global_width;
+        }
+    }
+    .table {
+        padding: 0 10px;
+        letter-spacing: 0.1px;
+        .tableHead {
+            height: 42px;
+            color: $main_element_color;
+        }
+        .tableRow {
+            height: 60px;
+            color: $second_element_color;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        .tableHead, .tableRow {
+            flex-wrap: nowrap;
+            flex-direction: row;
+            align-items: center;
+            border-bottom: $border_global_color $border_global_style $border_global_width;
+        }
+        .tableCell {
+            flex: 1 1 200px;
+            margin: 21px auto 21px 12px;
+            &:nth-child(1) {
+                flex: 0 0 110px;
+            }
+            &:nth-child(2) {
+                width: auto;
+            }
+        }
+    }
+
+
+
+}
+
+
+
+@media (max-width: 850px) {
+    .tableCell {
+        flex: 1 1 0;
+        margin: 21px auto 21px 12px;
+    }
+}

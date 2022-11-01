@@ -1,0 +1,30 @@
+@import '../../global.modules.scss';
+
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.body {
+    height: 44px;
+    display: flex;
+    border-bottom: $border_global_color $border_global_style $border_global_width;
+    flex: 1 0 100%;
+    .buttonIcon svg {
+        width: 24px;
+        height: 24px;
+        padding: 10px 0 10px 20px;
+    }
+    .buttonText {
+        color: $main_element_color;
+        padding: 13px 2px 15px 2px;
+        margin-left: 26px;
+        &.active {
+            color: #FFFFFF;
+            border-bottom: 2px solid $second_element_color;
+        }
+    }
+}
+
