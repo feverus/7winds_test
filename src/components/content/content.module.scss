@@ -4,6 +4,20 @@
     display: flex;
 }
 
+input {
+    border: $border_global_color $border_global_style $border_global_width;
+    border-radius: 6px;
+    height: 36px;
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0.1px;
+    color: #71717A;
+    background: #202124;
+    width: calc(100% - 20px);
+    margin: 12px 0;
+    padding: 0 10px;
+}
+
 .body {
     flex-direction: column;
     flex: 1 0 0;
@@ -52,9 +66,6 @@
             }
         }
     }
-
-
-
 }
 
 

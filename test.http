@@ -11,7 +11,7 @@ POST http://185.244.172.108:8081/v1/outlay-rows/entity/2466/row/create
 content-type: application/json
 
 {
-  "equipmentCosts": 1,
+  "equipmentCosts": 1.5,
   "estimatedProfit": 1,
   "machineOperatorSalary": 1,
   "mainCosts": 1,

@@ -1,5 +1,5 @@
 import {observer, inject} from "mobx-react";
-import defaultStore from '../../store/defaultStore'
+import dataStore from '../../store/dataStore'
 import { ReactSVG } from 'react-svg'
 import C from './level.module.scss'
 

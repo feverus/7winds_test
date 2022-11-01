@@ -3,9 +3,10 @@ import ky from 'ky';
 import * as I from '../store/storeInterfaces';
 import urlApi  from './urlApi';
 
-export const getApi = async (): Promise<any|string> => {
+export const getApi = async (): Promise<Array<I.Row>|string> => {
 	try {
-		const json:any = await ky.get(urlApi+"").json()
+		const answer:any = await ky.get(urlApi+"list")
+		const json = await answer.json()
 		return json
 	} catch (error) {
         return (error as Error).message

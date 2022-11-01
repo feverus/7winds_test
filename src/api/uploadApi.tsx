@@ -3,15 +3,14 @@ import ky from 'ky';
 import * as I from '../store/storeInterfaces';
 import urlApi  from './urlApi';
 
-const uploadApi = async (data:any, id: string): Promise<any|string> => {
+export const uploadApi = async (data:any, id: string): Promise<any|string> => {
 	try {
-		const json:any = await ky.post(urlApi+"", {
+		const answer:any = await ky.post(urlApi + id + "/update", {
 			json: data
-		}).json()
+		})
+		const json = await answer.json()
 		return json
 	} catch (error) {
         return (error as Error).message
     }
 }
-
-export default uploadApi;

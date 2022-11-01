@@ -1,9 +1,9 @@
 import {observer, inject} from "mobx-react";
-import defaultStore from '../../store/defaultStore'
+import dataStore from '../../store/dataStore'
 import C from './main.module.scss'
 import { TopMenu } from '../topMenu'
 import { NavBar } from '../navBar'
-import { Content } from '../content'
+import Content from '../content'
 
 export function Main() {
 	return (
