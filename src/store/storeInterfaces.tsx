@@ -15,6 +15,8 @@ export interface Row {
 
     "haveChild"?: boolean;
     "lastChild"?: boolean;
+    "showBranch"?: boolean;
+    
     "parentId"?: number|null;   
     "level"?: number;
 }

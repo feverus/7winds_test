@@ -1,3 +1,5 @@
+@import '../../global.modules.scss';
+
 .body {
     width: 107px;
     height: 26px;    
@@ -18,5 +20,18 @@
         height: 26px;
         min-width: 26px;
         min-height: 26px;
+        position: relative;
+        &.showBranch:nth-child(1) {
+            &:before {
+                content: "";
+                position: absolute;
+                @include branch-left;
+                height: 61px;
+                top: -17px;
+                left: 12px;
+            }   
+        }
     }
+    
+
 }

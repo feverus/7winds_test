@@ -46,6 +46,7 @@ export function Content() {
 				value={cell.value as number}
 				haveChild={!!dataStore.table[cell.row as number].haveChild} 
 				lastChild={!!dataStore.table[cell.row as number].lastChild} 
+				showBranch={!!dataStore.table[cell.row as number].showBranch} 
 				editedRow={state.editedRow} 
 				createRow={api.createRow}
 				deleteRow={api.deleteRow} />:

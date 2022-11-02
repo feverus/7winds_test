@@ -14,7 +14,6 @@ const useContent:UseContent = () => {
     const [needSave, setNeedSave] = useState<boolean>(false)
 
     let newTable:Array<I.Row> = []
-    let readyData:GridElement[][] = []
 
     useEffect(() => {
         getApi()
@@ -22,7 +21,7 @@ const useContent:UseContent = () => {
             if (typeof result!=='string') {
                 dataStore.setTable(result);
                 init(dataStore.table, 0, dataStore.table.length)
-                getGrid(dataStore.table, 0, dataStore.table.length)
+                getGrid(dataStore.table)
             }
             else console.error('Ошибка получения данных от сервера: '+result)
         }) 
@@ -39,7 +38,7 @@ const useContent:UseContent = () => {
                 console.log(result)
                 if (typeof result!=='string') {                    
                     dataStore.updateTable(result.changed.concat(result.current));
-                    getGrid(dataStore.table, 0, dataStore.table.length)
+                    getGrid(dataStore.table)
                 }
                 else console.error('Ошибка получения данных от сервера: '+result)
             })            
@@ -48,8 +47,14 @@ const useContent:UseContent = () => {
         }
     }, [needSave]) 
 
-    const getGrid = (rawData:Array<I.Row>, level:number, childsCount:number) => {
+    const getGrid = (rawData:Array<I.Row>) => {
+        console.log('getGrid')
+
         let row:GridElement[] = []      
+        let newTable:Array<I.Row> = []
+        let readyData:GridElement[][] = []
+        let temp:I.Row
+        let last = rawData.length-1
 
         rawData.forEach((json, num) => {
             row = []
@@ -61,28 +66,51 @@ const useContent:UseContent = () => {
             row.push({"value": json.overheads})
             row.push({"value": json.estimatedProfit})
             readyData.push(row)
-        })
 
-        setData(readyData)      
+            //пересчитываем свойства главной таблицы для отображения дерева
+            temp = JSON.parse(JSON.stringify(json))
+            temp.haveChild = false
+            temp.lastChild = false
+            temp.showBranch = true
+            if (num<last) {
+                if ((json.level as number) < (rawData[num+1].level as number))
+                    temp.haveChild = true
+                    
+                if ((json.level as number) > (rawData[num+1].level as number))
+                    temp.lastChild = true                               
+            } else {
+                temp.lastChild = true
+                temp.showBranch = false
+            }
+            newTable.push(temp)
+        })
+        
+        let deleteBranch = true
+        newTable.reverse()
+        newTable.forEach(row => {
+            if (deleteBranch) row.showBranch = false
+            if (row.level == 0) deleteBranch = true
+            if (row.level == 1) deleteBranch = false
+        })
+        newTable.reverse()
+
+        setData(readyData) 
+        dataStore.setTable(newTable)     
     }
+   
 
     const init = (rawData:Array<I.Row>, level:number, childsCount:number, parentId:number|null = null) => { 
-        
-        rawData.forEach((json, num) => {
-            let lastChild = (num<childsCount-1)?
-                false:
-                true
-            
+        rawData.forEach((json, num) => {            
             //рекурсивно добавляем свойства потомков
             if (json.child && json.child.length>0) {
-                newTable.push({...json, "haveChild": true, "lastChild": lastChild, "parentId": parentId, "child": [], "level": level})
+                newTable.push({...json, "parentId": parentId, "child": [], "level": level})
                 init(json.child, level+1, json.child.length, json.id)                
             } else {
-                newTable.push({...json, "haveChild": false, "lastChild": lastChild, "parentId": parentId, "child": [], "level": level})
+                newTable.push({...json, "parentId": parentId, "child": [], "level": level})
             }   
         })
 
-        dataStore.setTable(newTable)                
+        dataStore.setTable(newTable)              
     }
 
     const changeEditMode = (num: number|undefined) => {
@@ -136,13 +164,15 @@ const useContent:UseContent = () => {
             dataStore.table[row].parentId as number|null:
             dataStore.table[row].id
 
-        const newRow = (level===2)? row+1 :findPlaceToInsert(row, level)
+        let newRow:number = (level===2)? row+1 :findPlaceToInsert(row, level)
+        newRow = row+1
+
         console.log(newRow)
         console.log('parentId')
         console.log(parentId)
 
         dataStore.addInTable(newRow, parentId, level)
-        getGrid(dataStore.table, 0, dataStore.table.length)
+        getGrid(dataStore.table)
         changeEditMode(newRow)
         console.log(editedData)
     }
@@ -150,14 +180,14 @@ const useContent:UseContent = () => {
     const deleteRow = (row: number) => {
         if (editedRow!==undefined) return
         dataStore.deleteFromTable(row)        
-        getGrid(dataStore.table, 0, dataStore.table.length)
+        getGrid(dataStore.table)
 
         deleteApi(((dataStore.table[row].id) as number).toString())
         .then((result: string | ApiResponse) => {
             console.log(result)
             if (typeof result!=='string') {                    
                 dataStore.updateTable(result.changed);
-                getGrid(dataStore.table, 0, dataStore.table.length)
+                getGrid(dataStore.table)
             }
             else console.error('Ошибка получения данных от сервера: '+result)
         })

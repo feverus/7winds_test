@@ -1,12 +1,7 @@
 @import '../../global.modules.scss';
 
 
-@mixin branch-left {
-    border-left: $border_global_style $border_global_width $border_level_color;
-}
-@mixin branch-bottom {
-    border-bottom: $border_global_style $border_global_width $border_level_color;
-}
+
 
 button {
     background: none;
@@ -77,11 +72,6 @@ button:hover {
         height: 24px;
         top: 21px;
         left: 10px;
-    }
-    &.haveNextBrother:after {
-        height: 32px;
-        top: 13px;
-        left: -14px;
     }
 }
 

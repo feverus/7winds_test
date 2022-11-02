@@ -7,3 +7,10 @@ $border_level_color:#C6C6C6;
 $main_element_color: #A1A1AA;
 $main_bg_color: #27272A;
 $second_element_color: #ffffff;
+
+@mixin branch-left {
+    border-left: $border_global_style $border_global_width $border_level_color;
+}
+@mixin branch-bottom {
+    border-bottom: $border_global_style $border_global_width $border_level_color;
+}

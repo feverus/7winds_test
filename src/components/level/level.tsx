@@ -10,6 +10,7 @@ type TypeLevel = {
 	value:number,
 	haveChild: boolean,
 	lastChild: boolean,
+	showBranch: boolean,
 	editedRow?: number,
 	createRow: (row: number, level:number) => void,
 	deleteRow: (row: number) => void,
@@ -26,16 +27,18 @@ export type TypeDrawPict = {
 	deleteRow: (row: number) => void,
 }
 
-export function Level({row, value, haveChild, lastChild, editedRow, createRow, deleteRow}:TypeLevel) {
+export function Level({row, value, haveChild, lastChild, showBranch,  editedRow, createRow, deleteRow}:TypeLevel) {
 	const [state, api] = useLevel()
 
 	let content = <></>
+	let style: string = C.plug;
+	if (showBranch) style = style + ' ' + C.showBranch;
 
 	if (state.showMenu) {
 		content = <div className={C.menu}>
 			{state.iconsNames.map(
 				(name, num) => (num>=value && !(value===0 && num===2))?
-					<DrawPict						
+					<DrawPict				
 						name={state.iconsNames[num]} 
 						row={row}
 						value={num} 
@@ -46,7 +49,7 @@ export function Level({row, value, haveChild, lastChild, editedRow, createRow, d
 						deleteRow={deleteRow}
 						key={name+'-'+num}
 						/>:
-					<div className={C.plug} key={name+'-'+num}></div>
+					<div className={style} key={name+'-'+num}></div>
 			)}
 		</div>
 
@@ -59,13 +62,13 @@ export function Level({row, value, haveChild, lastChild, editedRow, createRow, d
 						row={row}
 						value={value}
 						haveChild={haveChild}
-						lastChild={lastChild} 
+						lastChild={lastChild}
 						withoutBranch={false}
 						createRow={createRow}
 						deleteRow={deleteRow}
 						key={name+'-'+num}
 						/>:
-					<div className={C.plug} key={name+'-'+num}></div>					
+					<div className={style} key={name+'-'+num}></div>					
 		)}			
 		</div>
 	}

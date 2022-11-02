@@ -25,7 +25,7 @@ export function DrawPict({ name, row, value, haveChild, lastChild, withoutBranch
 	}
 
 	if (haveChild) style = style + ' ' + C.haveChild;
-	if (!lastChild) style = style + ' ' + C.haveNextBrother;
+	if (!lastChild) style = style + ' ' + C.haveNextBrother;	
 	if (withoutBranch) style = style + ' ' + C.withoutBranch;
 
 	return (
