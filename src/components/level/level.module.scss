@@ -1,87 +1,14 @@
-@import '../../global.modules.scss';
-
-
-@mixin branch-left {
-    border-left: $border_global_style $border_global_width $border_level_color;
-}
-@mixin branch-bottom {
-    border-bottom: $border_global_style $border_global_width $border_level_color;
-}
-
-
-.level0, .level1, .level2 {
-    position: relative;
-}
-
-.level1::before, .level2::before, 
-.haveChild::after,
-.level1.haveNextBrother:after, .level2.haveNextBrother:after {
-    content: "";
-    position: absolute;
-}
-
-.haveChild::after,
-.level1.haveNextBrother:after, .level2.haveNextBrother:after {
-    @include branch-left;
-}
-
-.level0 {
-    padding-left: 2px;
-    svg path{
-        fill:#5F98F5;
-    }
-    &.haveChild {
-        &:after{            
-            height: 25px;
-            top: 20px;
-            left: 12px;
-        }
-    }
-}
-
-.level1 {
-    padding-left: 35px;
-    svg path{
-        fill:#95FFAC;
-    }
-    &:before {
-        @include branch-left;
-        @include branch-bottom;    
-        top: -20px;
+.body {
+    width: 107px;
+    height: 28px;    
+    .menu {
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        width: 107px;
         height: 28px;
-        left: 12px;    
-        width: 22px;
-    }
-    &.haveChild::after {
-        height: 25px;
-        top: 16px;
-        left: 42px;
-    }
-    &.haveNextBrother:after {
-        height: 32px;
-        top: 9px;
-        left: 12px;
-    }
-}
-
-
-
-.level2 {
-    padding-left: 56px;
-    svg path{
-        fill:#7890B2;
-    }
-    &:before {
-        @include branch-left;
-        @include branch-bottom;
-        top: -16px;
-        height: 28px;
-        left: 42px;
-        width: 17px;
-    }
-    &.haveNextBrother:after {
-        height: 32px;
-        top: 13px;
-        left: 42px;
+        background: #414144;
+        border-radius: 6px;
     }
 }

@@ -1,48 +1,47 @@
 import {observer, inject} from "mobx-react";
 import dataStore from '../../store/dataStore'
-import { ReactSVG } from 'react-svg'
+import { PropsSheetRenderer, PropsRowRenderer, PropsChanges, PropsCellRenderer, GridElement, RowProps, StateType, ApiType} from '../content/';
+import useLevel from './level.service'
+import { DrawPict } from "../drawPict";
 import C from './level.module.scss'
 
 type P = {
 	value:number,
 	haveChild: boolean,
 	lastChild: boolean,
+	editedRow?: number,
 }
 
-type D = P & {name:string}
+export type D = P & {name:string, withoutBranch?:boolean}
 
-function DrawPict({name, value, haveChild, lastChild}:D ) {
-	let style:string = ""
-	switch (value) {		
-		case 0:
-			style = C.level0; break;				
-		case 1:
-			style = C.level1; break;				
-		case 2:
-			style = C.level2; break;				
-		default:
-			break;
+export function Level({value, haveChild, lastChild, editedRow}:P) {
+	const [state, api] = useLevel()
+
+	let content = <></>
+
+	if (state.showMenu) {
+		content = <div className={C.menu}>
+			{state.iconsNames.map(
+				(name, num) => num>=value && 
+					<DrawPict 
+						name={state.iconsNames[num]} 
+						value={num} 
+						haveChild={(value==num) ? haveChild : false} 
+						lastChild={(value===num) ? lastChild : true} 
+						withoutBranch={(value===num) ? false : true} />
+			)}
+		</div>
+
+	} else {
+		content = <DrawPict name={state.iconsNames[value]} value={value} haveChild={haveChild} lastChild={lastChild} />
 	}
 
-	if (haveChild) style = style + ' ' + C.haveChild
-	if (!lastChild) style = style + ' ' + C.haveNextBrother
 	return (
-		<div className={style}>
-			<ReactSVG src={'icons/'+name+'.svg'} />
-		</div>
-	)
-}
-
-export function Level({value, haveChild, lastChild}:P) {
-	const iconsNames = [
-		"directory",
-		"subtract",
-		"sheet"
-	]
-	
-	return (
-		<div>
-			<DrawPict name={iconsNames[value]} value={value} haveChild={haveChild} lastChild={lastChild} />
+		<div
+			className={C.body}
+			onMouseEnter={()=>api.toggleMenu(editedRow, true)}
+			onMouseLeave={()=>api.toggleMenu(editedRow, false)}>
+			{content}
 		</div>
 	)
 }

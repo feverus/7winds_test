@@ -3,7 +3,7 @@ import dataStore from '../../store/dataStore'
 import C from './main.module.scss'
 import { TopMenu } from '../topMenu'
 import { NavBar } from '../navBar'
-import Content from '../content'
+import {Content} from '../content/content'
 
 export function Main() {
 	return (

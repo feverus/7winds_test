@@ -1,8 +1,9 @@
-import { PropsSheetRenderer, PropsRowRenderer, PropsChanges, PropsCellRenderer, GridElement, RowProps, StateType, ApiType } from './content.props';
-import C from './content.module.scss'
+import { PropsSheetRenderer, PropsRowRenderer, PropsChanges, PropsCellRenderer, GridElement, RowProps, StateType, ApiType} from '../content/';
+
+import C from './cellRenderer.module.scss'
 import { useState, useEffect, SetStateAction } from 'react'
 
-export default function CellRenderer(props: PropsCellRenderer, state: StateType, api: ApiType) {
+export function CellRenderer(props: PropsCellRenderer, state: StateType, api: ApiType) {
  
     const inputType = (props.col == 1) ?
         'text' :
