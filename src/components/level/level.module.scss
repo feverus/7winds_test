@@ -1,14 +1,22 @@
 .body {
     width: 107px;
-    height: 28px;    
-    .menu {
+    height: 26px;    
+    .menu, .oneIcon {
         display: flex;
         flex-wrap: nowrap;
         flex-direction: row;
         justify-content: flex-start;
         width: 107px;
-        height: 28px;
+        height: 26px;
+    }
+    .menu {
         background: #414144;
         border-radius: 6px;
+    }
+    .plug {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+        min-height: 26px;
     }
 }

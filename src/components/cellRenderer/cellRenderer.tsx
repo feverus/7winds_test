@@ -1,4 +1,4 @@
-import { PropsSheetRenderer, PropsRowRenderer, PropsChanges, PropsCellRenderer, GridElement, RowProps, StateType, ApiType} from '../content/';
+import { PropsSheetRenderer, PropsRowRenderer, PropsChanges, PropsCellRenderer, GridElement, StateType, ApiType} from '../content/';
 
 import C from './cellRenderer.module.scss'
 import { useState, useEffect, SetStateAction } from 'react'

@@ -17,7 +17,7 @@ export function Content() {
 		return(
 			<div className={C.table}>
 				<div className={C.tableHead}>
-					{state.columns.map((col, id) => (
+					{dataStore.columns.map((col, id) => (
 						<div key={id}
 							className={C.tableCell}>
 							{col.label}
@@ -41,10 +41,14 @@ export function Content() {
 
 	const valueViewer = (cell: GridElement) => {
 		const result = (cell.col===0)?
-			<Level value={cell.value as number}
+			<Level 
+				row={cell.row as number}
+				value={cell.value as number}
 				haveChild={!!dataStore.table[cell.row as number].haveChild} 
 				lastChild={!!dataStore.table[cell.row as number].lastChild} 
-				editedRow={state.editedRow} />:
+				editedRow={state.editedRow} 
+				createRow={api.createRow}
+				deleteRow={api.deleteRow} />:
 			cell.value	
 		return result		
 	}

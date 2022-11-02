@@ -6,6 +6,7 @@ import { NavBar } from '../navBar'
 import {Content} from '../content/content'
 
 export function Main() {
+
 	return (
 		<div className={C.container}>
 			<TopMenu/>

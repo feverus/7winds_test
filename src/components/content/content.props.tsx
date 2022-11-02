@@ -20,17 +20,8 @@ export interface GridElement extends ReactDataSheet.Cell<GridElement, number | s
     row?: number;
 }
 
-export type RowProps = Array<{
-    haveChild: boolean;
-    lastChild: boolean;
-    id: number|null;
-}>;
-
 export type StateType = {
     grid: GridElement[][];
-    columns: Array<{
-        label: string;
-    }>;
     editedRow: number | undefined;
     editedData: I.Row;
 };
@@ -42,6 +33,8 @@ export type ApiType = {
     clearEditedData: () => void;
     updateEditedData: (field: string, value: string|number, needSave: boolean) => void;
     saveEditedData: (field: string, value: string|number) => void;
+    createRow: (row: number, level: number) => void;
+    deleteRow: (row: number) => void;
 };
 
 export type ApiResponse = {

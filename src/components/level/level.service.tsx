@@ -23,8 +23,6 @@ const useLevel:UseLevel = () => {
     const toggleMenu = (editedRow: number | undefined, onOff: boolean) => {
         if (editedRow===undefined) {
             setShowMenu(onOff)
-            console.log('onOff')
-            console.log(onOff)
         }
     }
     const state = {

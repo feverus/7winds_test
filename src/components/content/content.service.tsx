@@ -3,35 +3,14 @@ import * as I from '../../store/storeInterfaces'
 import dataStore from '../../store/dataStore'
 import {getApi} from '../../api/getApi'
 import {uploadApi} from '../../api/uploadApi'
-import { UseContent, GridElement, RowProps, ApiResponse } from './content.props'
+import {deleteApi} from '../../api/deleteApi'
+import { UseContent, GridElement, ApiResponse } from './content.props'
 
 const useContent:UseContent = () => {    
-    const emptyEditedData = {
-        "id": null,
-        "rowName": "",
-        "total": 0,
-        "salary": 0,
-        "mimExploitation": 0,
-        "machineOperatorSalary": 0,
-        "materials": 0,
-        "mainCosts": 0,
-        "supportCosts": 0,
-        "equipmentCosts": 0,
-        "overheads": 0,
-        "estimatedProfit": 0}
-
-    const columns = [
-        { label: 'Уровень'},
-        { label: 'Наименование работ'},
-        { label: 'Основная з/п'},
-        { label: 'Оборудование'},
-        { label: 'Накладные расходы'},
-        { label: 'Сметная прибыль'},
-    ]
 
     const [data, setData] = useState<GridElement[][]>([])
     const [editedRow, setEditedRow] = useState<number|undefined>(undefined)
-    const [editedData, setEditedData] = useState<I.Row>(emptyEditedData)
+    const [editedData, setEditedData] = useState<I.Row>(dataStore.emptyEditedData)
     const [needSave, setNeedSave] = useState<boolean>(false)
 
     let newTable:Array<I.Row> = []
@@ -57,7 +36,8 @@ const useContent:UseContent = () => {
 
             uploadApi(editedData, id)
             .then((result: string | ApiResponse) => {
-                if (typeof result!=='string') {
+                console.log(result)
+                if (typeof result!=='string') {                    
                     dataStore.updateTable(result.changed.concat(result.current));
                     getGrid(dataStore.table, 0, dataStore.table.length)
                 }
@@ -96,7 +76,7 @@ const useContent:UseContent = () => {
             //рекурсивно добавляем свойства потомков
             if (json.child && json.child.length>0) {
                 newTable.push({...json, "haveChild": true, "lastChild": lastChild, "parentId": parentId, "child": [], "level": level})
-                init(json.child, level+1, json.child.length)                
+                init(json.child, level+1, json.child.length, json.id)                
             } else {
                 newTable.push({...json, "haveChild": false, "lastChild": lastChild, "parentId": parentId, "child": [], "level": level})
             }   
@@ -117,7 +97,7 @@ const useContent:UseContent = () => {
     }
 
     const clearEditedData = () => {
-        setEditedData(emptyEditedData)
+        setEditedData(dataStore.emptyEditedData)
     }
 
     const updateEditedData = (field: string, value: string|number, needSave: boolean) => {
@@ -131,9 +111,60 @@ const useContent:UseContent = () => {
         updateEditedData(field, value, true)
     }
 
+    const findPlaceToInsert = (row:number, level:number):number => {
+        let seek2:boolean = false
+        if (level == 1) seek2 = true
+
+        let result = dataStore.table.length
+
+        for (let i = dataStore.table.length-1; i > row+1; i--) {
+            if (dataStore.table[i].level===0) result = i           
+            if (seek2)
+                if (dataStore.table[i].level===1) result = i
+        }
+
+        return result
+    }
+
+    const createRow = (row: number, level: number) => {
+        if (editedRow!==undefined) return
+
+        console.log('createRow')
+        console.log(dataStore.table)
+
+        let parentId:number|null = (level===dataStore.table[row].level)?
+            dataStore.table[row].parentId as number|null:
+            dataStore.table[row].id
+
+        const newRow = (level===2)? row+1 :findPlaceToInsert(row, level)
+        console.log(newRow)
+        console.log('parentId')
+        console.log(parentId)
+
+        dataStore.addInTable(newRow, parentId, level)
+        getGrid(dataStore.table, 0, dataStore.table.length)
+        changeEditMode(newRow)
+        console.log(editedData)
+    }
+
+    const deleteRow = (row: number) => {
+        if (editedRow!==undefined) return
+        dataStore.deleteFromTable(row)        
+        getGrid(dataStore.table, 0, dataStore.table.length)
+
+        deleteApi(((dataStore.table[row].id) as number).toString())
+        .then((result: string | ApiResponse) => {
+            console.log(result)
+            if (typeof result!=='string') {                    
+                dataStore.updateTable(result.changed);
+                getGrid(dataStore.table, 0, dataStore.table.length)
+            }
+            else console.error('Ошибка получения данных от сервера: '+result)
+        })
+    }   
+
     const state = {
         grid: data,
-        columns: columns,
         editedRow: editedRow,
         editedData: editedData
     }
@@ -145,6 +176,8 @@ const useContent:UseContent = () => {
         clearEditedData: clearEditedData,
         updateEditedData: updateEditedData,
         saveEditedData: saveEditedData,
+        deleteRow:deleteRow,
+        createRow:createRow,
     }
 
     return (

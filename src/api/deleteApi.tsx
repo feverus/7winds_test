@@ -3,9 +3,10 @@ import ky from 'ky';
 import * as I from '../store/storeInterfaces';
 import urlApi  from './urlApi';
 
-export const deleteApi = async (): Promise<any|string> => {
+export const deleteApi = async (id: string): Promise<any|string> => {
 	try {
-		const json:any = await ky.delete(urlApi+"").json()
+		const answer:any = await ky.delete(urlApi + id + "/delete")
+		const json = await answer.json()
 		return json
 	} catch (error) {
         return (error as Error).message

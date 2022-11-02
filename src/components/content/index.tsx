@@ -6,4 +6,4 @@ export default
 	inject('dataStore')
 	(observer(Content));
 
-export type { PropsSheetRenderer, PropsRowRenderer, PropsChanges, PropsCellRenderer, GridElement, RowProps, StateType, ApiType } from './content.props'
+export type { PropsSheetRenderer, PropsRowRenderer, PropsChanges, PropsCellRenderer, GridElement, StateType, ApiType } from './content.props'

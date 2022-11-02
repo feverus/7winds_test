@@ -1,8 +1,15 @@
 import { ReactSVG } from 'react-svg';
 import C from './drawPict.module.scss';
-import { D } from "../level/level";
+import { TypeDrawPict } from "../level/level";
 
-export function DrawPict({ name, value, haveChild, lastChild, withoutBranch = false }: D) {
+export function DrawPict({ name, row, value, haveChild, lastChild, withoutBranch = false, createRow, deleteRow }: TypeDrawPict) {
+
+	const handleClick = (num:number, level: number) => {
+		console.log('level> '+level+' num> '+num)
+		if (level===3) deleteRow(num);
+		else createRow(num, level)
+	}
+
 	let style: string = "";
 	switch (value) {
 		case 0:
@@ -17,16 +24,16 @@ export function DrawPict({ name, value, haveChild, lastChild, withoutBranch = fa
 			break;
 	}
 
-	if (haveChild)
-		style = style + ' ' + C.haveChild;
-	if (!lastChild)
-		style = style + ' ' + C.haveNextBrother;
-	if (withoutBranch)
-		style = style + ' ' + C.withoutBranch;
+	if (haveChild) style = style + ' ' + C.haveChild;
+	if (!lastChild) style = style + ' ' + C.haveNextBrother;
+	if (withoutBranch) style = style + ' ' + C.withoutBranch;
 
 	return (
 		<div className={style}>
-			<ReactSVG src={'icons/' + name + '.svg'} />
+			<button
+				onClick={() => handleClick(row, value)}>
+				<ReactSVG src={'icons/' + name + '.svg'} />
+			</button>
 		</div>
 	);
 }
