@@ -63,7 +63,7 @@ export class DataStore {
                     finded = true
                 }     
             }
-        });
+        })
     }
 
     updateTable(updatedItems:Array<I.Row>) {

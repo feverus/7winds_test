@@ -139,16 +139,12 @@ const useContent:UseContent = () => {
         updateEditedData(field, value, true)
     }
 
-    const findPlaceToInsert = (row:number, level:number):number => {
-        let seek2:boolean = false
-        if (level == 1) seek2 = true
-
+    const findPlaceToInsert = (row:number):number => {
         let result = dataStore.table.length
 
         for (let i = dataStore.table.length-1; i > row+1; i--) {
             if (dataStore.table[i].level===0) result = i           
-            if (seek2)
-                if (dataStore.table[i].level===1) result = i
+            if (dataStore.table[i].level===1) result = i
         }
 
         return result
@@ -164,8 +160,20 @@ const useContent:UseContent = () => {
             dataStore.table[row].parentId as number|null:
             dataStore.table[row].id
 
-        let newRow:number = (level===2)? row+1 :findPlaceToInsert(row, level)
-        newRow = row+1
+        let newRow:number = 0
+        switch (level) {
+            case 0:
+                newRow = dataStore.table.length
+                break;        
+            case 1:
+                newRow = findPlaceToInsert(row)
+                break;        
+            case 2:
+                newRow = row+1
+                break;        
+            default:
+                break;
+        }
 
         console.log(newRow)
         console.log('parentId')
