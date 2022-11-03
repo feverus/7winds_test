@@ -1,4 +1,4 @@
-import {makeAutoObservable, observable, action, autorun} from 'mobx';
+import {makeAutoObservable, observable, action} from 'mobx';
 import * as I from './storeInterfaces'
 
 export class DataStore {
@@ -19,9 +19,7 @@ export class DataStore {
         "estimatedProfit": 0,
     };
 
-    columns: Array<{
-        label: string;
-    }> = [
+    columns: Array<{label: string}> = [
         { label: 'Уровень'},
         { label: 'Наименование работ'},
         { label: 'Основная з/п'},
@@ -51,10 +49,11 @@ export class DataStore {
     findAndUpdate(item:I.Row, row: undefined | number = undefined) {
         let finded = false
 
-        if (row!==undefined) this.table[row] = {...item,
-            parentId: this.table[row].parentId,
-            level: this.table[row].level,
-        };      
+        if (row!==undefined) 
+            this.table[row] = {...item,
+                parentId: this.table[row].parentId,
+                level: this.table[row].level,
+            }; 
         else {
             this.table.forEach((element, num) => {
                 if (!finded) {
@@ -79,7 +78,7 @@ export class DataStore {
                 row = undefined      
         updatedItems.forEach(item => {            
             this.findAndUpdate(item, row)
-        });
+        })
     }
 
     addInTable(row:number, parentId: number | null, level: number) {
@@ -92,7 +91,6 @@ export class DataStore {
             level:level,
         })
     }
-
 
     deleteFromTable(row:number) {
         let listTodelete:Array<number> = [row]
@@ -108,7 +106,7 @@ export class DataStore {
         }
 
         findChildTodelete(row)
-        for (var i = listTodelete.length -1; i >= 0; i--)
+        for (let i = listTodelete.length -1; i >= 0; i--)
             this.table.splice(listTodelete[i],1)
     }
 }

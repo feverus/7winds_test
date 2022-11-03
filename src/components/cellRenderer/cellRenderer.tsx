@@ -1,7 +1,6 @@
-import { PropsSheetRenderer, PropsRowRenderer, PropsChanges, PropsCellRenderer, GridElement, StateType, ApiType} from '../content/';
-
+import { useState } from 'react'
+import { PropsCellRenderer, StateType, ApiType} from '../content/';
 import C from './cellRenderer.module.scss'
-import { useState, useEffect, SetStateAction } from 'react'
 
 export function CellRenderer(props: PropsCellRenderer, state: StateType, api: ApiType) {
  
@@ -21,23 +20,25 @@ export function CellRenderer(props: PropsCellRenderer, state: StateType, api: Ap
     let [value, setValue] = useState(state.editedData[fieldName as keyof typeof state.editedData] as string|number)
 
     const handleKeyDown = (code: string) => {        
-        if (code=='Enter' || code=='NumpadEnter') {
+        if (code=='Enter' || code=='NumpadEnter') 
             api.saveEditedData(fieldName, value)
-        }
-        if ((code=='Escape') && (state.editedData.id!==null)) api.changeEditMode(undefined)
+        if ((code=='Escape') && (state.editedData.id!==null))
+            api.changeEditMode(undefined)
     }
 
     const handleChange = (value: string | number) => {
-        if (inputType==='text') setValue(value)
-        else setValue(Math.round(value as number))
-       
+        if (inputType==='text')
+            setValue(value)
+        else
+            setValue(Math.round(value as number))       
     }
 
     if ((state.editedRow == props.row) && (props.col !== 0)) {
         return (
             <div
                 key={'div-'+props.col+'-'+props.row}
-                className={C.tableCell+' '+C.flex}>
+                className={C.tableCell+' '+C.flex}
+            >
                 <input 
                     key={'input-'+props.col+'-'+props.row}
                     type={inputType}
@@ -47,13 +48,14 @@ export function CellRenderer(props: PropsCellRenderer, state: StateType, api: Ap
                     onKeyDown={(e)=>handleKeyDown(e.code)}
                 ></input>
             </div>
-        );
+        )
     } else {
         return (
             <div
                 key={'div-'+props.col+'-'+props.row}
                 className={C.tableCell+' '+C.block}
-                onDoubleClick={() => (api.changeEditMode(props.row))}>
+                onDoubleClick={() => (api.changeEditMode(props.row))}
+            >
                 {props.children}
             </div>
         );

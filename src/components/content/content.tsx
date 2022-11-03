@@ -1,25 +1,22 @@
-import { useEffect } from 'react'
-
-
 import dataStore from '../../store/dataStore'
 import { Level } from "../level";
 import useContent from "./content.service";
 import C from './content.module.scss'
-
 import ReactDataSheet from 'react-datasheet';
-import { PropsSheetRenderer, PropsRowRenderer, PropsChanges, PropsCellRenderer, GridElement } from './content.props';
+import { PropsSheetRenderer, PropsRowRenderer, PropsCellRenderer, GridElement } from './content.props';
 import {CellRenderer} from '../cellRenderer/';
 
 export function Content() {
 	const [state, api] = useContent()
   
 	const sheetRenderer = (props: PropsSheetRenderer) => {
-		return(
+		return (
 			<div className={C.table}>
 				<div className={C.tableHead}>
 					{dataStore.columns.map((col, id) => (
 						<div key={id}
-							className={C.tableCell}>
+							className={C.tableCell}
+						>
 							{col.label}
 						</div>
 					))}
@@ -32,7 +29,7 @@ export function Content() {
 	}
 
 	const rowRenderer = (props: PropsRowRenderer) => {
-		return(
+		return (
 			<div className={C.tableRow}>
 				{props.children}
 			</div>
@@ -49,7 +46,8 @@ export function Content() {
 				showBranch={!!dataStore.table[cell.row as number].showBranch} 
 				editedRow={state.editedRow} 
 				createRow={api.createRow}
-				deleteRow={api.deleteRow} />:
+				deleteRow={api.deleteRow} 
+			/>:
 			cell.value	
 		return result		
 	}
@@ -65,7 +63,6 @@ export function Content() {
 				data={state.grid}
 				valueRenderer={(cell) => cell.value}
 				valueViewer={(cell: GridElement) => valueViewer(cell)}
-
 				sheetRenderer={(props: PropsSheetRenderer)=>sheetRenderer(props)}
 				rowRenderer={(props: PropsRowRenderer)=>rowRenderer(props)}
 				cellRenderer={(props: PropsCellRenderer)=>CellRenderer(props, state, api)}

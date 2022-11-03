@@ -1,5 +1,3 @@
-import {observer, inject} from "mobx-react";
-import dataStore from '../../store/dataStore'
 import C from './topMenu.module.scss'
 import { ReactSVG } from 'react-svg'
 

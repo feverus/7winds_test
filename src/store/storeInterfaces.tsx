@@ -11,12 +11,11 @@ export interface Row {
     "equipmentCosts": number,
     "overheads": number,
     "estimatedProfit": number,
-    "child"?: Array<Row>,
 
+    "child"?: Array<Row>,
     "haveChild"?: boolean;
     "lastChild"?: boolean;
-    "showBranch"?: boolean;
-    
+    "showBranch"?: boolean;    
     "parentId"?: number|null;   
     "level"?: number;
 }

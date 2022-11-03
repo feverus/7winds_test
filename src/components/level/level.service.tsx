@@ -1,14 +1,5 @@
 import { useState, useEffect } from 'react'
-
-type UseLevel = () => [
-    state: {
-        iconsNames:Array<string>;
-        showMenu:boolean
-    },
-    api: {
-        toggleMenu: (editedRow: number | undefined, onOff: boolean) => void
-    }
-]
+import { UseLevel } from './level.props';
 
 const useLevel:UseLevel = () => {    
     const iconsNames = [
@@ -21,10 +12,9 @@ const useLevel:UseLevel = () => {
     const [showMenu, setShowMenu] = useState(false)
 
     const toggleMenu = (editedRow: number | undefined, onOff: boolean) => {
-        if (editedRow===undefined) {
-            setShowMenu(onOff)
-        }
+        if (editedRow===undefined) setShowMenu(onOff)
     }
+
     const state = {
         iconsNames: iconsNames,
         showMenu: showMenu,

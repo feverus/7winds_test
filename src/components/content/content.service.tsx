@@ -21,7 +21,7 @@ const useContent:UseContent = () => {
             if (typeof result!=='string') {
                 //если таблица пуста, откроем режим создания новой строки 1 уровня
                 if (result.length===0) {
-                    findedEmptyTable()            
+                    foundEmptyTable()            
                 } else {
                     dataStore.setTable(result)                    
                     init(dataStore.table, 0)
@@ -45,7 +45,8 @@ const useContent:UseContent = () => {
                     getGrid(dataStore.table)
                 }
                 else console.error('Ошибка получения данных от сервера: '+result)
-            })            
+            })    
+
             changeEditMode(undefined)
             setNeedSave(false)
         }
@@ -62,20 +63,19 @@ const useContent:UseContent = () => {
         return result
     }
     
-    const findedEmptyTable = () => {
+    const foundEmptyTable = () => {
         dataStore.setTable([{...dataStore.emptyEditedData, level:0}])
         getGrid(dataStore.table) 
         changeEditMode(0)  
     }
 
     const getGrid = (rawData:Array<I.Row>) => {
-        console.log('getGrid')
-
         let row:GridElement[] = []      
         let newTable:Array<I.Row> = []
         let readyData:GridElement[][] = []
         let temp:I.Row
         let last = rawData.length-1
+        let deleteBranch = true
 
         rawData.forEach((json, num) => {
             row = []
@@ -93,14 +93,9 @@ const useContent:UseContent = () => {
             temp.haveChild = false
             temp.lastChild = false
             temp.showBranch = true
-
-            console.log(num+' '+last+' ')
-            console.log(rawData)
-
             if (num<last) {
                 if ((json.level as number) < (rawData[num+1].level as number))
-                    temp.haveChild = true
-                    
+                    temp.haveChild = true                    
                 if ((json.level as number) > (rawData[num+1].level as number))
                     temp.lastChild = true                               
             } else {
@@ -110,7 +105,7 @@ const useContent:UseContent = () => {
             newTable.push(temp)
         })
         
-        let deleteBranch = true
+        //удаляем ненужное отображение ветвей снизу вверх
         newTable.reverse()
         newTable.forEach(row => {
             if (deleteBranch) row.showBranch = false
@@ -126,7 +121,7 @@ const useContent:UseContent = () => {
 
     const init = (rawData:Array<I.Row>, level:number, parentId:number|null = null) => { 
         rawData.forEach((json, num) => {            
-            //рекурсивно добавляем свойства потомков
+            //рекурсивно добавляем потомков, устанавливая уровень вложенности и id родителя
             if (json.child && json.child.length>0) {
                 newTable.push({...json, "parentId": parentId, "child": [], "level": level})
                 init(json.child, level+1, json.id)                
@@ -139,15 +134,10 @@ const useContent:UseContent = () => {
     }
 
     const changeEditMode = (num: number|undefined) => {
-
         if (num==editedRow) setEditedRow(undefined);
         else setEditedRow(num)
 
-        if (num!==undefined) {
-            let clone = JSON.parse(JSON.stringify(dataStore.table[num]))
-            clone.child = undefined
-            setEditedData(clone)
-        }
+        if (num!==undefined) setEditedData({...dataStore.table[num], child:undefined})
     }
 
     const clearEditedData = () => {
@@ -165,13 +155,8 @@ const useContent:UseContent = () => {
         updateEditedData(field, value, true)
     }
 
-
-
     const createRow = (row: number, level: number) => {
         if (editedRow!==undefined) return
-
-        console.log('createRow')
-        console.log(dataStore.table)
 
         let parentId:number|null = (level===dataStore.table[row].level)?
             dataStore.table[row].parentId as number|null:
@@ -202,12 +187,11 @@ const useContent:UseContent = () => {
 
         deleteApi(((dataStore.table[row].id) as number).toString())
         .then((result: string | ApiResponse) => {
-            console.log(result)
             if (typeof result!=='string') {
-                console.log('Успешно');
-                dataStore.deleteFromTable(row)        
+                console.log('Успешно удалено');
+                dataStore.deleteFromTable(row)      
                 
-                if (dataStore.table.length===0) findedEmptyTable() 
+                if (dataStore.table.length===0) foundEmptyTable() 
                 else getGrid(dataStore.table)
             }
             else console.error('Ошибка получения данных от сервера: '+result)

@@ -1,11 +1,4 @@
-import { useState, useEffect } from 'react'
-
-type UseNavBarList = () => [
-    state: {
-        list:Array<string>;
-        choosen:number
-    },
-]
+import { UseNavBarList } from './navBarList.props';
 
 const useNavBarList:UseNavBarList = () => {    
     const state ={

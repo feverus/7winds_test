@@ -1,9 +1,8 @@
-import {observer, inject} from "mobx-react";
-import dataStore from '../../store/dataStore'
 import useNavBarList from './navBarList.service'
 import C from './navBarList.module.scss'
 import { ReactSVG } from 'react-svg'
 
+//не стал выносить в отдельный файл, т.к. компонент не имеет функционала и создан "для красоты"
 function Item(item:string, id:number, choosen:number) {
 	let style = (id===choosen)?
 		' '+C.choosen:
@@ -15,16 +14,15 @@ function Item(item:string, id:number, choosen:number) {
 			<label>{item}</label>
 		</div>
 	)
-
 }
+
 export function NavBarList() {
 	const [state] = useNavBarList()
 	return (
 		<div className={C.body}>
 			{state.list.map((item, id)=>(
 				Item(item, id, state.choosen)
-			))}
-	
+			))}	
 		</div>
 	)
 }

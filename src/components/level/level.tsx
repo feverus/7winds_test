@@ -1,31 +1,7 @@
-import {observer, inject} from "mobx-react";
-import dataStore from '../../store/dataStore'
 import useLevel from './level.service'
-import { DrawPict } from "../drawPict";
+import { DrawPict } from "../drawPict/drawPict";
 import C from './level.module.scss'
-import { stat } from "fs";
-
-type TypeLevel = {
-	row: number,
-	value:number,
-	haveChild: boolean,
-	lastChild: boolean,
-	showBranch: boolean,
-	editedRow?: number,
-	createRow: (row: number, level:number) => void,
-	deleteRow: (row: number) => void,
-}
-
-export type TypeDrawPict = {
-	name:string,
-	row:number,
-	value:number,
-	haveChild: boolean,
-	lastChild: boolean,
-	withoutBranch:boolean,
-	createRow: (row: number, level:number) => void,
-	deleteRow: (row: number) => void,
-}
+import { TypeLevel } from "./level.props";
 
 export function Level({row, value, haveChild, lastChild, showBranch,  editedRow, createRow, deleteRow}:TypeLevel) {
 	const [state, api] = useLevel()
@@ -48,11 +24,10 @@ export function Level({row, value, haveChild, lastChild, showBranch,  editedRow,
 						createRow={createRow}
 						deleteRow={deleteRow}
 						key={name+'-'+num}
-						/>:
+					/>:
 					<div className={style} key={name+'-'+num}></div>
 			)}
 		</div>
-
 	} else {
 		content = <div className={C.oneIcon}>
 			{state.iconsNames.map(
@@ -67,7 +42,7 @@ export function Level({row, value, haveChild, lastChild, showBranch,  editedRow,
 						createRow={createRow}
 						deleteRow={deleteRow}
 						key={name+'-'+num}
-						/>:
+					/>:
 					<div className={style} key={name+'-'+num}></div>					
 		)}			
 		</div>
@@ -77,7 +52,8 @@ export function Level({row, value, haveChild, lastChild, showBranch,  editedRow,
 		<div
 			className={C.body}
 			onMouseEnter={()=>api.toggleMenu(editedRow, true)}
-			onMouseLeave={()=>api.toggleMenu(editedRow, false)}>
+			onMouseLeave={()=>api.toggleMenu(editedRow, false)}
+		>
 			{content}
 		</div>
 	)

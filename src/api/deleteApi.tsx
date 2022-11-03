@@ -1,7 +1,6 @@
-import ky from 'ky';
-
-import * as I from '../store/storeInterfaces';
-import urlApi  from './urlApi';
+import ky from 'ky'
+import * as I from '../store/storeInterfaces'
+import urlApi  from './urlApi'
 
 export const deleteApi = async (id: string): Promise<any|string> => {
 	try {

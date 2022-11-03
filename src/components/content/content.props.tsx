@@ -12,8 +12,6 @@ export type PropsCellRenderer = {
     children: string | number | boolean | ReactFragment | ReactPortal | ReactElement<any, string | JSXElementConstructor<any>> | null | undefined;
 };
 
-export type PropsChanges = { cell: any; row: any; col: any; value: any; }[];
-
 export interface GridElement extends ReactDataSheet.Cell<GridElement, number | string> {
     value: number | string;
     col?: number;

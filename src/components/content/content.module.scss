@@ -23,6 +23,7 @@ input {
     flex: 1 0 0;
     background: #202124;
     height: 100%;
+    width: calc(100% - 300px);
     .head {
         flex-direction: row;
         height: 44px;
@@ -72,7 +73,7 @@ input {
 
 @media (max-width: 850px) {
     .tableCell {
-        flex: 1 1 0;
+        flex: 0 1 0;
         margin: 21px auto 21px 12px;
     }
 }

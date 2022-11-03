@@ -1,17 +1,13 @@
 @import '../../global.modules.scss';
 
-
-
-
 button {
     background: none;
     border: none;
     padding: 0;
     margin: 0;
-
-}
-button:hover {
-    transform:scale(1.05)
+    &:hover {
+        transform:scale(1.05)
+    }
 }
 
 .level0, .level1, .level2, .level3 {
@@ -27,16 +23,18 @@ button:hover {
     padding-top: 2px;    
 }
 
-
-.level1::before, .level2::before, 
+.level1::before,
+.level2::before, 
 .haveChild::after,
-.level1.haveNextBrother:after, .level2.haveNextBrother:after {
+.level1.haveNextBrother:after,
+.level2.haveNextBrother:after {
     content: "";
     position: absolute;
 }
 
 .haveChild::after,
-.level1.haveNextBrother:after, .level2.haveNextBrother:after {
+.level1.haveNextBrother:after,
+.level2.haveNextBrother:after {
     @include branch-left;
 }
 
@@ -74,8 +72,6 @@ button:hover {
         left: 10px;
     }
 }
-
-
 
 .level2 {
     svg path{
