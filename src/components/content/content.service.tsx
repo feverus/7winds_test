@@ -19,9 +19,14 @@ const useContent:UseContent = () => {
         getApi()
         .then(result => {
             if (typeof result!=='string') {
-                dataStore.setTable(result);
-                init(dataStore.table, 0, dataStore.table.length)
-                getGrid(dataStore.table)
+                //если таблица пуста, откроем режим создания новой строки 1 уровня
+                if (result.length===0) {
+                    findedEmptyTable()            
+                } else {
+                    dataStore.setTable(result)                    
+                    init(dataStore.table, 0)
+                    getGrid(dataStore.table)
+                }
             }
             else console.error('Ошибка получения данных от сервера: '+result)
         }) 
@@ -35,9 +40,8 @@ const useContent:UseContent = () => {
 
             uploadApi(editedData, id)
             .then((result: string | ApiResponse) => {
-                console.log(result)
-                if (typeof result!=='string') {                    
-                    dataStore.updateTable(result.changed.concat(result.current));
+                if (typeof result!=='string') {             
+                    dataStore.updateTable(result.changed.concat(result.current), editedRow);
                     getGrid(dataStore.table)
                 }
                 else console.error('Ошибка получения данных от сервера: '+result)
@@ -46,6 +50,23 @@ const useContent:UseContent = () => {
             setNeedSave(false)
         }
     }, [needSave]) 
+
+    const findPlaceToInsert = (row:number):number => {
+        let result = dataStore.table.length
+
+        for (let i = dataStore.table.length-1; i > row; i--) {
+            if (dataStore.table[i].level===0) result = i           
+            if (dataStore.table[i].level===1) result = i
+        }
+
+        return result
+    }
+    
+    const findedEmptyTable = () => {
+        dataStore.setTable([{...dataStore.emptyEditedData, level:0}])
+        getGrid(dataStore.table) 
+        changeEditMode(0)  
+    }
 
     const getGrid = (rawData:Array<I.Row>) => {
         console.log('getGrid')
@@ -72,6 +93,10 @@ const useContent:UseContent = () => {
             temp.haveChild = false
             temp.lastChild = false
             temp.showBranch = true
+
+            console.log(num+' '+last+' ')
+            console.log(rawData)
+
             if (num<last) {
                 if ((json.level as number) < (rawData[num+1].level as number))
                     temp.haveChild = true
@@ -99,21 +124,22 @@ const useContent:UseContent = () => {
     }
    
 
-    const init = (rawData:Array<I.Row>, level:number, childsCount:number, parentId:number|null = null) => { 
+    const init = (rawData:Array<I.Row>, level:number, parentId:number|null = null) => { 
         rawData.forEach((json, num) => {            
             //рекурсивно добавляем свойства потомков
             if (json.child && json.child.length>0) {
                 newTable.push({...json, "parentId": parentId, "child": [], "level": level})
-                init(json.child, level+1, json.child.length, json.id)                
+                init(json.child, level+1, json.id)                
             } else {
                 newTable.push({...json, "parentId": parentId, "child": [], "level": level})
             }   
-        })
+        })   
 
-        dataStore.setTable(newTable)              
+        dataStore.setTable(newTable)        
     }
 
     const changeEditMode = (num: number|undefined) => {
+
         if (num==editedRow) setEditedRow(undefined);
         else setEditedRow(num)
 
@@ -139,16 +165,7 @@ const useContent:UseContent = () => {
         updateEditedData(field, value, true)
     }
 
-    const findPlaceToInsert = (row:number):number => {
-        let result = dataStore.table.length
 
-        for (let i = dataStore.table.length-1; i > row+1; i--) {
-            if (dataStore.table[i].level===0) result = i           
-            if (dataStore.table[i].level===1) result = i
-        }
-
-        return result
-    }
 
     const createRow = (row: number, level: number) => {
         if (editedRow!==undefined) return
@@ -163,7 +180,7 @@ const useContent:UseContent = () => {
         let newRow:number = 0
         switch (level) {
             case 0:
-                newRow = dataStore.table.length
+                newRow = row
                 break;        
             case 1:
                 newRow = findPlaceToInsert(row)
@@ -175,27 +192,23 @@ const useContent:UseContent = () => {
                 break;
         }
 
-        console.log(newRow)
-        console.log('parentId')
-        console.log(parentId)
-
         dataStore.addInTable(newRow, parentId, level)
         getGrid(dataStore.table)
         changeEditMode(newRow)
-        console.log(editedData)
     }
 
     const deleteRow = (row: number) => {
         if (editedRow!==undefined) return
-        dataStore.deleteFromTable(row)        
-        getGrid(dataStore.table)
 
         deleteApi(((dataStore.table[row].id) as number).toString())
         .then((result: string | ApiResponse) => {
             console.log(result)
-            if (typeof result!=='string') {                    
-                dataStore.updateTable(result.changed);
-                getGrid(dataStore.table)
+            if (typeof result!=='string') {
+                console.log('Успешно');
+                dataStore.deleteFromTable(row)        
+                
+                if (dataStore.table.length===0) findedEmptyTable() 
+                else getGrid(dataStore.table)
             }
             else console.error('Ошибка получения данных от сервера: '+result)
         })

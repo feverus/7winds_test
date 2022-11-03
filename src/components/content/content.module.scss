@@ -56,13 +56,13 @@ input {
             border-bottom: $border_global_color $border_global_style $border_global_width;
         }
         .tableCell {
-            flex: 1 1 200px;
+            flex: 0 1 200px;
             margin: 21px auto 21px 12px;
             &:nth-child(1) {
                 flex: 0 0 110px;
             }
             &:nth-child(2) {
-                width: auto;
+                flex: 1 1 200px;
             }
         }
     }

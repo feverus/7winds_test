@@ -35,6 +35,7 @@ export class DataStore {
             emptyEditedData: observable,
             columns: observable,
             table: observable,
+
             setTable: action,
             findAndUpdate: action,
             updateTable: action,
@@ -47,28 +48,37 @@ export class DataStore {
         this.table = newTable
     }
 
-    findAndUpdate(item:I.Row) {
+    findAndUpdate(item:I.Row, row: undefined | number = undefined) {
         let finded = false
 
-        this.table.forEach((element, num) => {
-            if (!finded) {
-                if (element.id==item.id) {
-                    this.table[num] = {...item,
-                        id: this.table[num].id,
-                        haveChild: this.table[num].haveChild,
-                        lastChild: this.table[num].lastChild,
-                        parentId: this.table[num].parentId,
-                        level: this.table[num].level,
-                    }
-                    finded = true
-                }     
-            }
-        })
+        if (row!==undefined) this.table[row] = {...item,
+            parentId: this.table[row].parentId,
+            level: this.table[row].level,
+        };      
+        else {
+            this.table.forEach((element, num) => {
+                if (!finded) {
+                    if (element.id==item.id) {
+                        this.table[num] = {...item,
+                            id: this.table[num].id,
+                            haveChild: this.table[num].haveChild,
+                            lastChild: this.table[num].lastChild,
+                            parentId: this.table[num].parentId,
+                            level: this.table[num].level,
+                        }
+                        finded = true
+                    }     
+                }
+            })
+        }
     }
 
-    updateTable(updatedItems:Array<I.Row>) {
-        updatedItems.forEach(item => {
-            this.findAndUpdate(item)
+    updateTable(updatedItems:Array<I.Row>, row: undefined | number) {  
+        if (row!==undefined) 
+            if (this.table[row].id!==null)
+                row = undefined      
+        updatedItems.forEach(item => {            
+            this.findAndUpdate(item, row)
         });
     }
 
@@ -83,8 +93,23 @@ export class DataStore {
         })
     }
 
+
     deleteFromTable(row:number) {
-        this.table.splice(row, 1)
+        let listTodelete:Array<number> = [row]
+
+        const findChildTodelete = (row:number) => {
+            let parentId = this.table[row].id
+            this.table.forEach((child, index) => {
+                if (child.parentId==parentId) {
+                    listTodelete.push(index)
+                    findChildTodelete(index)
+                }
+            })
+        }
+
+        findChildTodelete(row)
+        for (var i = listTodelete.length -1; i >= 0; i--)
+            this.table.splice(listTodelete[i],1)
     }
 }
 

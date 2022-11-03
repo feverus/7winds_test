@@ -20,11 +20,11 @@ export function CellRenderer(props: PropsCellRenderer, state: StateType, api: Ap
     
     let [value, setValue] = useState(state.editedData[fieldName as keyof typeof state.editedData] as string|number)
 
-    const handleKeyDown = (code: string) => {
+    const handleKeyDown = (code: string) => {        
         if (code=='Enter' || code=='NumpadEnter') {
             api.saveEditedData(fieldName, value)
         }
-        if (code=='Escape') api.changeEditMode(undefined)
+        if ((code=='Escape') && (state.editedData.id!==null)) api.changeEditMode(undefined)
     }
 
     const handleChange = (value: string | number) => {
@@ -37,7 +37,7 @@ export function CellRenderer(props: PropsCellRenderer, state: StateType, api: Ap
         return (
             <div
                 key={'div-'+props.col+'-'+props.row}
-                className={C.tableCell}>
+                className={C.tableCell+' '+C.flex}>
                 <input 
                     key={'input-'+props.col+'-'+props.row}
                     type={inputType}
@@ -52,7 +52,7 @@ export function CellRenderer(props: PropsCellRenderer, state: StateType, api: Ap
         return (
             <div
                 key={'div-'+props.col+'-'+props.row}
-                className={C.tableCell}
+                className={C.tableCell+' '+C.block}
                 onDoubleClick={() => (api.changeEditMode(props.row))}>
                 {props.children}
             </div>
